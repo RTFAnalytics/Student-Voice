@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${courseDetails.getCourseName()}">Предмет</title>
+    <meta charset="UTF-8" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"
+          name="viewport">
+    <link href="../static/bootstrap/css/bootstrap.min.css" rel="stylesheet"
+          th:href="@{/bootstrap/css/bootstrap.min.css}"
+          type="text/css">
+    <style>
+        .table tbody tr td {
+            vertical-align: middle;
+            overflow-wrap: break-word;
+            border: 1px solid #dadada;
+            text-align: center;
+        }
+        td a{
+            overflow-wrap: normal;
+        }
+        .table thead tr th {
+            background-color: #aebfea;
+            border: 1px solid #dadada;
+            vertical-align: middle;
+            text-align: center;
+            cursor: pointer;
+            margin: 0 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="page-header" style="text-align: center"><h1>Student Voice</h1></div>
+    <div class="row" style="display:flex; justify-content: center">
+        <div class="col-md-12 col-lg-8"
+             style="display: flex; flex-direction: column; justify-content: center; align-items: center; width: 100%">
+            <th:block th:if="${result} and !${result.isSuccess()}">
+                <div class="alert alert-danger" role="alert" th:text="${result.getFormattedMessage()}">
+                    Сообщение ошибки
+                </div>
+            </th:block>
+            <div style="overflow-wrap: normal">
+                <h2 style="text-align: center" th:text="'Пары ' + ${courseDetails.getCourseName()}">Пары предмета</h2>
+                <table class="table" id="items-table">
+                    <thead>
+                    <tr>
+                        <th onclick="sortTableByDate(0)">Дата проведения</th>
+                        <th onclick="sortTableByText(1)">Статус</th>
+                        <th onclick="sortTableByText(2)">Преподаватель</th>
+                        <th>Ссылка на QR код для отзыва</th>
+                        <th>Изменить пару</th>
+                        <th>Список посетивших студентов</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="classSession : ${classSessionsList}">
+                        <td th:text="${#temporals.format(classSession.getStartDateTime(), 'dd.MM.yyyy - HH:mm')}">Дата проведения</td>
+                        <td th:text="${classSession.getStatus()}">Статус</td>
+                        <td th:text="${classSession.getProfessorName()}">Преподаватель</td>
+                        <td style="padding: 2px 6px">
+                            <a class="btn"
+                               style="background-color: #6172ab;color: white;padding: 12px 20px;width: 100%;"
+                               th:href="@{/sessions/{sessionId}(sessionId=${classSession.getSessionId()})}">
+                                <span th:text="${classSession.getCourseDetails().getCourseName()}">
+                                    Название предмета</span>
+                                <br/>
+                                <span th:text="${classSession.getSessionName()}">
+                                    Название пары</span>
+                                <br/>
+                                <span th:text="${classSession.getCourseDetails().getInstituteAddress()} + ' / ' + ${classSession.getRoomName()}">Адрес пары</span>
+                            </a>
+                        </td>
+                        <td style="padding: 2px 6px">
+                            <a class="btn"
+                               style="background-color: #6172ab;color: white;padding: 12px 20px;width: 100%; height: 100%"
+                               th:href="@{/sessions/{sessionId}/update(sessionId=${classSession.getSessionId()})}">
+                                Изменить пару
+                            </a>
+                        </td>
+                        <td style="padding: 2px 6px">
+                            <a class="btn"
+                               style="background-color: #6172ab;color: white;padding: 12px 20px;width: 100%; height: 100%"
+                               th:href="@{/sessions/{sessionId}/students(sessionId=${classSession.getSessionId()})}">
+                                Список студентов
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <a class="btn" style="background-color: #7ed26a;color: white;padding: 6px 20px;width: 80%"
+               th:href="@{/sessions/create?courseId={courseId}(courseId=${courseId})}">Запланировать пару</a>
+            <form th:replace="~{fragments/home-button}"></form>
+            <form th:replace="~{fragments/logout-button}"></form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    let asc = true;
+    window.onload = function (){
+        sortTableByDate(0);
+    }
+    function sortTableByDate(column) {
+        let table = document.getElementById("items-table");
+        var rows = table.rows;
+        var sortedRows = Array.from(rows).slice(1).sort(function(a, b) {
+            var dateA = dateFromString(a.cells[column].innerText);
+            var dateB = dateFromString(b.cells[column].innerText);
+            return asc ? dateA - dateB : dateB - dateA;
+        });
+        var frag = document.createDocumentFragment();
+        sortedRows.forEach(function(row) {
+            frag.appendChild(row);
+        });
+        table.tBodies[0].appendChild(frag);
+        asc = !asc;
+    }
+
+    function dateFromString(dateText) {
+        const datePattern = /(\d{2})\.(\d{2})\.(\d{4}) - (\d{2}):(\d{2})/;
+        const match = dateText.match(datePattern);
+        if(match) {
+            const year = parseInt(match[3], 10);
+            const month = parseInt(match[2], 10) - 1; // JavaScript months are 0-based
+            const day = parseInt(match[1], 10);
+            const hours = parseInt(match[4], 10);
+            const minutes = parseInt(match[5], 10);
+            return new Date(year, month, day, hours, minutes);
+        }
+        return Date;
+    }
+
+    function sortTableByText(column) {
+        let table = document.getElementById("items-table");
+        var rows = table.rows;
+        var sortedRows = Array.from(rows).slice(1).sort(function (a, b) {
+            var textA = a.cells[column].textContent.toLowerCase();
+            var textB = b.cells[column].textContent.toLowerCase();
+            return asc ? textA.localeCompare(textB) : textB.localeCompare(textA);
+        });
+        var frag = document.createDocumentFragment();
+        sortedRows.forEach(function (row) {
+            frag.appendChild(row);
+        });
+        table.tBodies[0].appendChild(frag);
+        asc = !asc;
+    }
+</script>
+</body>
+</html>

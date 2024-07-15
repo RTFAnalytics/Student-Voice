@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Изменить пару</title>
+    <meta charset="UTF-8" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"
+          name="viewport">
+    <link href="../static/bootstrap/css/bootstrap.min.css" rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}"
+          type="text/css">
+</head>
+<body>
+<div class="container">
+    <div class="page-header" style="text-align: center"><h1>Student Voice</h1></div>
+    <div class="row" style="display:flex; justify-content: center;">
+        <div class="col-md-12 col-lg-8" style="display: flex; flex-direction: column; justify-content: center; align-items: center">
+            <div>
+                <h3 style="text-align: center">
+                    <span th:text="${classSession.getCourseDetails().getCourseName()}">Название пары</span>
+                    <br/><br/>
+                    <span th:text="${classSession.getCourseDetails().getInstituteAddress()} + ' / ' + ${classSession.getRoomName()}">Место проведения</span>
+                </h3>
+                <h3 style="text-align: center" th:text="${classSessionDate}">Время проведения</h3>
+            </div>
+            <form method="post" th:action="@{/sessions/update}"
+                  style="display: flex; flex-direction: column; justify-content: center; align-items: center">
+                <th:block th:if="${result} and !${result.isSuccess()}">
+                    <div class="alert alert-danger" role="alert" th:text="${result.getFormattedMessage()}">
+                        Сообщение ошибки
+                    </div>
+                </th:block>
+                <th:block th:if="${result} and ${result.isSuccess()}">
+                    <div class="alert-success" style="padding: 15px; margin-bottom: 20px; border: 1px solid transparent; border-radius: 4px"
+                         th:text="${result.getFormattedMessage()}">
+                        Сообщение успеха
+                    </div>
+                </th:block>
+                <input type="hidden" class="form-control" name="sessionId" th:value="${classSession.getSessionId()}"/>
+                <div class="form-group">
+                    <label>Преподаватель:
+                        <select class="form-control" id="professor-select" name="newProfessor" required>
+                            <option value="" selected disabled hidden>-- Выберите преподавателя --</option>
+                            <th:block th:each="professor : ${professorsList}">
+                                <option th:text="${professor.getFullName()}"
+                                        th:value="${professor.getFullName()}"/>
+                            </th:block>
+                        </select>
+                    </label>
+                </div>
+                <button style="width: 215px;" class="btn btn-primary" type="submit" value="Изменить">Изменить</button>
+            </form>
+            <form th:replace="~{fragments/home-button}"></form>
+            <form th:replace="~{fragments/logout-button}"></form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    document.getElementById('roles-selection').addEventListener('change', function () {
+        var professorInput = document.getElementById('professor-input');
+        professorInput.hidden = true;
+
+        var selectedOption = document.getElementById('roles-selection').value;
+        if (selectedOption === 'PROFESSOR') {
+            professorInput.hidden = false;
+        }
+        professorInput.getElementsByTagName('input')[0].value = '';
+    });
+</script>
+</body>
+</html>

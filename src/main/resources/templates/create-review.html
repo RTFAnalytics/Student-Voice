@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Оставьте свой отзыв</title>
+    <meta charset="UTF-8">
+    <meta charset="UTF-8" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"
+          name="viewport">
+    <style th:replace="~{fragments/create-review-style}"></style>
+</head>
+<body>
+<div class="form-container">
+    <form method="post" th:action="@{/reviews/save}" >
+        <h1>Обратная связь</h1>
+        <input name="sessionId" type="hidden" th:value="${param.sessionId}">
+        <p>Наименование дисциплины:</p>
+        <p style="font-weight: normal" th:text="${courseName}">предмет, институт</p>
+        <p>Дата проведения:</p>
+        <p style="font-weight: normal" th:text="${classSessionDate}">Дата проведения</p>
+        <p>Место проведения:</p>
+        <p style="font-weight: normal" th:text="${address}"></p>
+
+
+        <label for="student-name">Ваше ФИО:</label>
+        <input id="student-name" name="studentFullName" type="text" placeholder="ФИО студента">
+
+        <p style="margin-bottom: 5px">Оцените прошедшую пару:</p>
+        <div class="rating-area">
+            <input id="star-5" name="reviewValue" type="radio" value="5"/>
+            <label for="star-5" title="Оценка «5»"></label>
+            <input id="star-4" name="reviewValue" type="radio" value="4"/>
+            <label for="star-4" title="Оценка «4»"></label>
+            <input id="star-3" name="reviewValue" type="radio" value="3"/>
+            <label for="star-3" title="Оценка «3»"></label>
+            <input id="star-2" name="reviewValue" type="radio" value="2"/>
+            <label for="star-2" title="Оценка «2»"></label>
+            <input id="star-1" name="reviewValue" type="radio" value="1"/>
+            <label for="star-1" title="Оценка «1»"></label>
+        </div>
+
+        <label for="comment">Комментарий по желанию:</label>
+        <textarea id="comment" name="comment" placeholder="Комментарий"></textarea>
+        <div th:if="${result} and !${result.isSuccess()}" th:text="${result.getFormattedMessage()}"
+        style="color: #9f3636;font-weight: bold; padding: 8px; background-color: #dc8484;border-radius: 5px">При отправке произошла ошибка</div>
+        <input type="submit" value="Отправить">
+    </form>
+</div>
+</body>
+</html>

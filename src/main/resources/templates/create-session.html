@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Create Session</title>
+    <meta charset="UTF-8" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"
+          name="viewport">
+    <link href="../static/bootstrap/css/bootstrap.min.css" rel="stylesheet"
+          th:href="@{/bootstrap/css/bootstrap.min.css}"
+          type="text/css">
+</head>
+<body>
+<div class="container">
+    <div class="page-header" style="text-align: center"><h1>Student Voice</h1></div>
+    <div class="row" style="display:flex; justify-content: center">
+        <div class="col-md-12 col-lg-8"
+             style="display: flex; flex-direction: column; justify-content: center; align-items: center">
+            <div><h3 style="text-align: center">Запланировать пару</h3></div>
+            <form method="post"
+                  style="display: flex; flex-direction: column; justify-content: center; align-items: center"
+                  th:action="@{/sessions/create}">
+                <th:block th:if="${result} and !${result.isSuccess()}">
+                    <div class="alert alert-danger" role="alert" th:text="${result.getFormattedMessage()}">
+                        Сообщение ошибки
+                    </div>
+                </th:block>
+                <th:block th:if="${result} and ${result.isSuccess()}">
+                    <div class="alert-success"
+                         style="padding: 15px; margin-bottom: 20px; border: 1px solid transparent; border-radius: 4px"
+                         th:text="${result.getFormattedMessage()}">
+                        Сообщение успеха
+                    </div>
+                </th:block>
+                <div class="form-group">
+                    <label>Институт:
+                        <select class="form-control" id="institute-select" name="instituteId" onchange="updateCourses()"
+                                required>
+                            <option disabled hidden selected value="">-- Выберите институт --</option>
+                            <th:block th:each="institute : ${institutesList}">
+                                <option th:selected="${requestedCourse} and ${institute.getShortName() == requestedCourse.getCourseDetails().getInstituteName()}"
+                                        th:text="${institute.getShortName()} + ' / ' + ${institute.getAddress()}"
+                                        th:value="${institute.getInstituteId()}"/>
+                            </th:block>
+                        </select>
+                    </label>
+                </div>
+                <div class="form-group" style="margin-bottom: 0">
+                    <label>Предмет:
+                        <select class="form-control" id="course-select" name="courseId"
+                                required th:disabled="!${requestedCourse}">
+                            <option disabled hidden selected value="">-- Выберите предмет --</option>
+                            <th:block th:each="course : ${coursesList}">
+                                <option th:selected="${requestedCourse} and ${requestedCourse.getCourseId() == course.getCourseId()}"
+                                        th:text="${course.getCourseDetails().getCourseName()} + ' / ' + ${course.getCourseDetails().getInstituteAddress()}"
+                                        th:value="${course.getCourseId()}"/>
+                            </th:block>
+                        </select>
+                    </label>
+                </div>
+                <a class="btn"
+                   style="background-color: #7ed26a;color: white;padding: 6px 20px;margin-top: 4px;margin-bottom: 20px"
+                   th:href="@{/courses/create}">Создать новый предмет</a>
+                <div class="form-group" style="margin-bottom: 0">
+                    <label>Имя Преподавателя:
+                        <input class="form-control" id="professor-name-input" name="professorName" required type="text"/>
+                    </label>
+                </div>
+                <button class="btn" style="margin-bottom: 20px"
+                        th:attr="onclick=|insertProfessorName('${professorName}')|" th:if="${professorName}"
+                        type="button">
+                    Вставить меня
+                </button>
+                <div class="form-group">
+                    <label>Название пары:<input class="form-control" name="sessionName" type="text" required/></label>
+                </div>
+                <div class="form-group">
+                    <label>Кабинет:<input class="form-control" name="roomName" type="text" required/></label>
+                </div>
+                <div class="form-group">
+                    <label>Начало пары: <input class="form-control" name="startSession" required type="datetime-local"/></label>
+                </div>
+                <div class="form-group">
+                    <label>Конец пары: <input class="form-control" name="endSession" required type="datetime-local"/></label>
+                </div>
+                <button class="btn btn-primary" style="width: 215px" type="submit" value="Создать">Создать</button>
+            </form>
+            <form th:replace="~{fragments/home-button}"></form>
+            <form th:replace="~{fragments/logout-button}"></form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    function insertProfessorName(name) {
+        document.getElementById('professor-name-input').value = name;
+    }
+
+    function updateCourses() {
+        let instituteSelect = document.getElementById('institute-select');
+        let coursesSelect = document.getElementById('course-select');
+        let instituteAddress = instituteSelect.options[instituteSelect.selectedIndex].text.split(' / ')[1];
+
+        coursesSelect.disabled = instituteAddress === "";
+        coursesSelect.selectedIndex = 0;
+
+        for (let i = 0; i < coursesSelect.options.length; i++) {
+            coursesSelect.options[i].style.display = 'block';
+
+            if (coursesSelect.options[i].text.indexOf(instituteAddress) === -1) {
+                coursesSelect.options[i].style.display = 'none';
+            }
+        }
+    }
+</script>
+</body>
+</html>

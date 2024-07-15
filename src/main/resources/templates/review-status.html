@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta charset="UTF-8" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"
+          name="viewport">
+    <title>Оставьте свой отзыв</title>
+    <style th:replace="~{fragments/create-review-style}"></style>
+</head>
+<body>
+<div class="form-container">
+    <h1 th:if="${result.isSuccess()}">Ваш отзыв успешно отправлен!</h1>
+    <h1 th:if="!${result.isSuccess()}" th:text="${result.getFormattedMessage()}">Такой пары не существует</h1>
+</div>
+</body>
+</html>

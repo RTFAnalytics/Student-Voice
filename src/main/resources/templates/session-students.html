@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Студенты</title>
+    <meta charset="UTF-8" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"
+          name="viewport">
+    <link href="../static/bootstrap/css/bootstrap.min.css" rel="stylesheet"
+          th:href="@{/bootstrap/css/bootstrap.min.css}"
+          type="text/css">
+    <style>
+        #items-table th {
+            background-color: #aebfea;
+            border: 1px solid #dadada;
+            vertical-align: middle;
+            text-align: center;
+            cursor: pointer;
+            margin: 0 5px;
+        }
+        #items-table td {
+            border: 1px solid #dadada;
+            vertical-align: middle;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="page-header" style="text-align: center"><h1>Student Voice</h1></div>
+    <div class="row" style="display:flex; justify-content: center">
+        <div class="col-lg-8"
+             style="display: flex; flex-direction: column; justify-content: center; align-items: center">
+            <th:block th:if="${result} and !${result.isSuccess()}">
+                <div class="alert alert-danger" role="alert" th:text="${result.getFormattedMessage()}">
+                    Сообщение ошибки
+                </div>
+            </th:block>
+            <th:block th:if="${result} and ${result.isSuccess()}">
+                <div class="alert-success" style="padding: 15px; margin-bottom: 20px; border: 1px solid transparent; border-radius: 4px"
+                     th:text="${result.getFormattedMessage()}">
+                    Сообщение успеха
+                </div>
+            </th:block>
+            <div>
+                <h3 style="text-align: center">
+                    <span th:text="${classSession.getCourseDetails().getCourseName()}">Название пары</span>
+                    <br/><br/>
+                    <span th:text="${classSession.getCourseDetails().getInstituteAddress()} + ' / ' + ${classSession.getRoomName()}">Место проведения</span>
+                </h3>
+                <h3 style="text-align: center" th:text="${classSessionDate}">Время проведения</h3>
+            </div>
+            <div style="overflow-wrap: normal">
+                <h2 style="text-align: center; margin-bottom: 40px" th:text="'Студенты (всего ' + ${reviewsList.size()} + ')'">Студенты</h2>
+                <table class="table" id="items-table">
+                    <thead>
+                    <tr>
+                        <th onclick="sortTable(0)">Имя студента</th>
+                        <th onclick="sortTable(1)">Время отзыва</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="review : ${reviewsList}">
+                        <td th:text="${review.getStudentFullName()}">Имя Студента</td>
+                        <td th:text="${T(ru.urfu.sv.utils.formatters.TemporalFormatter).instantToEkbDateTime(review.getTimestamp())}">Время отзыва</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <form th:replace="~{fragments/home-button}"></form>
+            <form th:replace="~{fragments/logout-button}"></form>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    let asc = true;
+    window.onload = function () {
+        sortTable(0);
+    }
+
+    function sortTable(n) {
+        let table, rows, switching, i, x, y, shouldSwitch, dir, switchcount = 0;
+        table = document.getElementById("items-table");
+        switching = true;
+        dir = "asc";
+        while (switching) {
+            switching = false;
+            rows = table.rows;
+            for (i = 1; i < (rows.length - 1); i++) {
+                shouldSwitch = false;
+                x = rows[i].getElementsByTagName("TD")[n];
+                y = rows[i + 1].getElementsByTagName("TD")[n];
+                if (dir === "asc") {
+                    if (x.innerHTML.toLowerCase() > y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                } else if (dir === "desc") {
+                    if (x.innerHTML.toLowerCase() < y.innerHTML.toLowerCase()) {
+                        shouldSwitch = true;
+                        break;
+                    }
+                }
+            }
+            if (shouldSwitch) {
+                rows[i].parentNode.insertBefore(rows[i + 1], rows[i]);
+                switching = true;
+                switchcount++;
+            } else {
+                if (switchcount === 0 && dir === "asc") {
+                    dir = "desc";
+                    switching = true;
+                }
+            }
+        }
+    }
+</script>
+</body>
+</html>

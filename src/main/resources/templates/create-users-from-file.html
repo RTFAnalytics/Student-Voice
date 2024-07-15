@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Create User</title>
+    <meta charset="UTF-8" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"
+          name="viewport">
+    <link href="../static/bootstrap/css/bootstrap.min.css" rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}"
+          type="text/css">
+</head>
+<body>
+<div class="container">
+    <div class="page-header" style="text-align: center"><h1>Student Voice</h1></div>
+    <div class="row" style="display:flex; justify-content: center;">
+        <div class="col-md-12 col-lg-8" style="display: flex; flex-direction: column; justify-content: center; align-items: center">
+            <div><h3 style="text-align: center">Создать пользователей из файла</h3></div>
+            <form method="post" th:action="@{/admin/users/create-from-file}"
+                  style="display: flex; flex-direction: column; justify-content: center; align-items: center" enctype="multipart/form-data">
+                <th:block th:if="${result} and !${result.isSuccess()}">
+                    <div class="alert alert-danger" role="alert" th:text="${result.getFormattedMessage()}">
+                        Сообщение ошибки
+                    </div>
+                </th:block>
+                <th:block th:if="${result} and ${result.isSuccess()}">
+                    <div class="alert-success" style="padding: 15px; margin-bottom: 20px; border: 1px solid transparent; border-radius: 4px"
+                         th:text="${result.getFormattedMessage()}">
+                        Сообщение успеха
+                    </div>
+                </th:block>
+
+                <input style="width: 300px;" class="form-group" type="file" name="file"/>
+                <button style="width: 215px;margin-bottom: 15px" class="btn btn-primary" type="submit">Загрузить файл</button>
+            </form>
+            <th:block th:if="${result} and ${result.isSuccess()}">
+                <a th:download="'createdUsers ' + ${currentDate} + '.csv'"
+                        th:href="${'data:application/octet-stream;base64,' + createdUsers}"
+                        style="width: 215px;background-color: #4caf4e; color: white" class="btn">Скачать результат</a>
+            </th:block>
+            <form th:replace="~{fragments/home-button}"></form>
+            <form th:replace="~{fragments/logout-button}"></form>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title th:text="'Пара - ' + ${classSession.getCourseDetails().getCourseName()} + ', '
+    + ${classSession.getCourseDetails().getInstituteAddress()} + ', '
+    + ${classSessionDate}">Пара</title>
+    <meta charset="UTF-8" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"
+          name="viewport">
+    <link href="../static/bootstrap/css/bootstrap.min.css" rel="stylesheet"
+          th:href="@{/bootstrap/css/bootstrap.min.css}"
+          type="text/css">
+    <style>
+        .qrcode {
+            margin: 15px;
+            width: 256px;
+            height: 256px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="page-header" style="text-align: center"><h1>Student Voice</h1></div>
+    <div class="row" style="display:flex; justify-content: center">
+        <div class="col-md-12 col-lg-8"
+             style="display: flex; flex-direction: column; justify-content: center; align-items: center">
+            <th:block th:if="${result} and !${result.isSuccess()}">
+                <div class="alert alert-danger" role="alert" th:text="${result.getFormattedMessage()}">
+                    Сообщение ошибки
+                </div>
+            </th:block>
+            <th:block th:if="${result} and ${result.isSuccess()}">
+                <div class="alert-success" style="padding: 15px; margin-bottom: 20px; border: 1px solid transparent; border-radius: 4px"
+                     th:text="${result.getFormattedMessage()}">
+                    Сообщение успеха
+                </div>
+            </th:block>
+            <div>
+                <h3 style="text-align: center">
+                    <span th:text="${classSession.getCourseDetails().getCourseName()}">Название пары</span>
+                    <br/><br/>
+                    <span th:text="${classSession.getCourseDetails().getInstituteAddress()} + ' / ' + ${classSession.getRoomName()}">Место проведения</span>
+                </h3>
+                <h3 style="text-align: center" th:text="${classSessionDate}">Время проведения</h3>
+            </div>
+            <div style="text-align: center; font-size: 20px; margin: 15px 0"
+                 th:text="'Преподаватель - ' + ${classSession.getProfessorName()}">Преподаватель
+            </div>
+            <div style="text-align: center; font-size: 20px">QR код для отзыва:</div>
+            <div style="display: flex; justify-content: center">
+                <img alt="QR код для отзыва" class="qrcode" src="" th:src="${'data:image/jpg;base64,' + sessionQR}"/>
+            </div>
+            <div>
+                <a class="btn"
+                   style="background-color: #4caf4e;color: white;padding: 10px 25px;margin-top: 12px;font-size: 18px;font-weight: bold"
+                   th:download="${classSession.getCourseDetails().getCourseName()} + '_' + ${classSessionDate} + '.jpg'"
+                   th:href="${'data:image/jpg;base64,' + sessionQR}">
+                    Скачать изображение
+                </a>
+            </div>
+
+            <div style="display:flex;justify-content: space-evenly;margin-top: 12px">
+                <div style="display: inline-flex;margin: 0 8px;align-items: center;width: 45%">
+                    <label style="font-size: 12px" for="timer">Выберете время, на которое ссылка станет рабочей</label>
+                    <select class="form-control" id="timer" name="timeSelect">
+                        <option value="00:10">10 минут</option>
+                        <option value="00:15">15 минут</option>
+                        <option value="00:20">20 минут</option>
+                        <option value="00:25">25 минут</option>
+                        <option value="00:30">30 минут</option>
+                        <option value="01:00">1 час</option>
+                    </select>
+                </div>
+                <form id="start-timer" method="post" style="display: inline-flex;align-content: center" th:action="@{/sessions/start-timer}">
+                    <input name="sessionId" th:value="${classSession.getSessionId()}" type="hidden"/>
+                    <input id="time-input" name="time" value="00:10" type="hidden"/>
+                    <button class="btn"
+                            th:disabled="${result} and ${result.isSuccess()}"
+                            style="background-color: #d56821; color: white; padding: 10px 20px; font-size: 16px;font-weight: bold"
+                            type="submit">Временно включить ссылку
+                    </button>
+                </form>
+            </div>
+            <div>
+                <a class="btn"
+                   style="background-color: #4c74af;color: white;padding: 6px 20px;margin-top: 12px"
+                   th:href="${reviewUrl}">
+                    Перейти к форме отзыва
+                </a>
+            </div>
+            <form th:replace="~{fragments/home-button}"></form>
+            <form th:replace="~{fragments/logout-button}"></form>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    const timeSelector = document.getElementById("timer");
+    const timeInputValue = document.getElementById("time-input");
+
+    timeSelector.addEventListener(
+        "input",
+        () => {
+            timeInputValue.value = timeSelector.value;
+        },
+        false,
+    );
+</script>
+</body>
+</html>

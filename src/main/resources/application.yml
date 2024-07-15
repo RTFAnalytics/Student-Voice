@@ -1,0 +1,33 @@
+application.host: 'http://localhost:8080'
+
+path.web.driver: ${web.driver.path}
+
+server.servlet.session.timeout: 1h
+
+spring:
+  application.name: student-voice
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: "jdbc:postgresql://localhost:5432/student_voice"
+    username: postgres
+    password: ${postgresql.database.password}
+  jpa:
+    database: postgresql
+    hibernate.ddl-auto: none
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+    properties:
+      hibernate.show_sql: false
+
+urfu:
+  user:
+    username: ${urfu.username}
+    password: ${urfu.password}
+  auth.url: 'https://sso.urfu.ru/adfs/OAuth2/authorize?resource=https://istudent.urfu.ru&type=web_server&client_id=https://istudent.urfu.ru&redirect_uri=https://istudent.urfu.ru/auth&response_type=code'
+modeus:
+  url: 'https://istudent.urfu.ru/s/modeus'
+  persons.url: 'https://urfu.modeus.org/schedule-calendar-v2/api/people/persons/search'
+  events.url: 'https://urfu.modeus.org/schedule-calendar-v2/api/calendar/events/search'
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG

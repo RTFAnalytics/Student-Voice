@@ -1,0 +1,126 @@
+<style>
+    body {
+        font-family: 'Open Sans', sans-serif;
+        background-color: #F2F2F2;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+    }
+
+    .form-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background-color: #FFFFFF;
+        padding: 30px;
+        box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+    }
+
+    h1 {
+        font-size: 2.5em;
+        color: #3F3F3F;
+        margin-bottom: 30px;
+    }
+
+    label {
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #3F3F3F;
+    }
+
+    input[type="text"],
+    input[type="number"] {
+        margin-top: 10px;
+        margin-bottom: 20px;
+        height: 40px;
+        font-size: 1.1em;
+        padding: 0 10px;
+        border: 1px solid #CCCCCC;
+        border-radius: 5px;
+    }
+
+    textarea {
+        margin-top: 10px;
+        margin-bottom: 20px;
+        height: 150px;
+        width: 250px;
+        font-size: 1.1em;
+        padding: 10px;
+        border: 1px solid #CCCCCC;
+        border-radius: 5px;
+    }
+
+    input[type="submit"] {
+        margin-top: 10px;
+        height: 40px;
+        font-size: 1.2em;
+        background-color: #3F51B5;
+        color: #FFFFFF;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #303F9F;
+    }
+
+    .rating-area {
+        overflow: hidden;
+        width: 300px;
+        margin: 0 0 15px;
+    }
+
+    .rating-area:not(:checked) > input {
+        display: none;
+    }
+
+    .rating-area:not(:checked) > label {
+        float: right;
+        width: 60px;
+        padding: 0;
+        cursor: pointer;
+        font-size: 40px;
+        line-height: 32px;
+        color: lightgrey;
+        text-shadow: 1px 1px #bbb;
+    }
+
+    .rating-area:not(:checked) > label:before {
+        content: '★';
+    }
+
+    .rating-area > input:checked ~ label {
+        color: gold;
+        text-shadow: 1px 1px #c60;
+    }
+
+    .rating-area:not(:checked) > label:hover,
+    .rating-area:not(:checked) > label:hover ~ label {
+        color: gold;
+    }
+
+    .rating-area > input:checked + label:hover,
+    .rating-area > input:checked + label:hover ~ label,
+    .rating-area > input:checked ~ label:hover,
+    .rating-area > input:checked ~ label:hover ~ label,
+    .rating-area > label:hover ~ input:checked ~ label {
+        color: gold;
+        text-shadow: 1px 1px goldenrod;
+    }
+
+    .rate-area > label:active {
+        position: relative;
+    }
+
+    p {
+        font-size: 1.2em;
+        font-weight: bold;
+        color: #3F3F3F;
+    }
+</style>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <title>Create First Admin</title>
+    <meta charset="UTF-8" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"
+          name="viewport">
+    <link href="../static/bootstrap/css/bootstrap.min.css" rel="stylesheet" th:href="@{/bootstrap/css/bootstrap.min.css}"
+          type="text/css">
+</head>
+<body>
+<div class="container">
+    <div class="page-header" style="text-align: center"><h1>Student Voice</h1></div>
+    <div class="row" style="display:flex; justify-content: center">
+        <div class="col-md-12 col-lg-8"
+             style="display: flex; flex-direction: column; justify-content: center; align-items: center">
+            <h3 style="text-align: center">Создать первого администратора</h3>
+            <form method="post" th:action="@{/admin/create-first}"
+                  style="display: flex; flex-direction: column; justify-content: center; align-items: center">
+                <th:block th:if="${result} and !${result.isSuccess()}">
+                    <div class="alert alert-danger" role="alert" th:text="${result.getFormattedMessage()}">
+                        Сообщение ошибки
+                    </div>
+                </th:block>
+                <th:block th:if="${result} and ${result.isSuccess()}">
+                    <div class="alert-success" style="padding: 15px; margin-bottom: 20px; border: 1px solid transparent; border-radius: 4px"
+                         th:text="${result.getFormattedMessage()}">
+                        Сообщение успеха
+                    </div>
+                </th:block>
+                <div class="form-group"><label>Логин: <input class="form-control" name="username" type="text" required/> </label></div>
+                <div class="form-group"><label>Пароль: <input class="form-control" name="password" type="password" required/> </label></div>
+                <button class="btn btn-primary" type="submit" value="Создать">Создать</button>
+            </form>
+        </div>
+    </div>
+</div>
+</body>
+</html>
