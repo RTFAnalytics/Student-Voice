@@ -668,3 +668,94 @@ java -jar {jar_name}.jar --spring.config.location=file:application.yml
 3. Создать пару с этим предметом
 4. На странице пары получить qr-код или перейти по ссылке под ним
 5. На открывшейся форме заполнить ФИО, поставить оценку и нажать кнопку *Отправить*
+
+ # Деплой на сервер (Ubuntu 22.04 Jammy)
+
+1. Первоначально клонируем проект на сервер:
+
+  ```bash
+  git clone <имя вашего репозитория>
+  ```
+
+2. Необходимо установить JAVA 17.
+
+  ```bash
+  sudo apt update
+  sudo apt install openjdk-17-jdk
+  export JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
+  source ~/.bashrc
+  ```
+
+3. Необходимо установить Chromedriver.
+
+  ```bash
+  wget https://storage.googleapis.com/chrome-for-testing-public/126.0.6478.126/linux64/chrome-headless-shell-linux64.zip
+  unzip chromedriver_linux64.zip
+  sudo mv chromedriver /usr/local/bin/chromedriver
+  sudo chown root:root /usr/local/bin/chromedriver
+  sudo chmod +x /usr/local/bin/chromedriver
+  export WEB_DRIVER_PATH=/usr/local/bin/chromedriver
+  ```
+
+4. Установим PostgreSQL и создадим Базу данных, а также пользователя.
+
+  ```bash
+  sudo apt update
+  sudo apt install postgresql
+  sudo service postgresql start
+  sudo systemctl enable postgresql
+  sudo su - postgres
+  psql -c "CREATE USER myuser WITH PASSWORD 'userPassword'"
+  psql -c "CREATE DATABASE mydatabase"
+  psql -c "GRANT ALL PRIVILEGES ON DATABASE mydatabase TO myuser"
+  exit
+  ```
+
+  !Если не получается подключиться к базе данных откройте файл:
+
+  ```bash
+  sudo nano /etc/postgresql/<версия БД>/main/postgresql.conf
+  ```
+
+  и расскомментируйте строку:
+
+  ```bash
+  #listen_addresses = 'localhost'   
+  ```
+
+  Также можно добавить свой адрес:
+
+  ```bash
+  listen_addresses = '192.168.1.100, 127.0.0.1'
+  ```
+
+  И перезапустим нашу базу данных:
+
+  ```bash
+  sudo service postgresql restart
+  ```
+
+5. Установим maven для сборки проекта.
+
+  ```bash
+  sudo apt update
+  sudo apt install maven
+  mvn --version
+  ```
+
+6. Далее сформируем .jar файл. Для этого в директории проекта пропишите:
+
+  ```bash
+  mvn package spring-boot:repackage
+  cd target
+  ```
+
+7. Скопируем настройки проекта `application.yml` из `src/main/resources/application.yml` в текущую директорию.
+
+  При необходимости возможно изменение настроек в `application.yml` в зависимости от реквизитов БД.
+
+8. Запустим проект:
+
+  ```bash
+  java -jar student-voice-0.2.jar --spring.config.location=file:application.yml --urfu.username=vadim.streltsov@urfu.ru --urfu.password=VadimkaIT100601
+  ```
