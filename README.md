@@ -690,8 +690,8 @@ java -jar {jar_name}.jar --spring.config.location=file:application.yml
 
   ```bash
   wget https://storage.googleapis.com/chrome-for-testing-public/126.0.6478.126/linux64/chrome-headless-shell-linux64.zip
-  unzip chromedriver_linux64.zip
-  sudo mv chromedriver /usr/local/bin/chromedriver
+  unzip chrome-headless-shell-linux64.zip
+  sudo mv chrome-headless-shell-linux64 /usr/local/bin/chromedriver
   sudo chown root:root /usr/local/bin/chromedriver
   sudo chmod +x /usr/local/bin/chromedriver
   export WEB_DRIVER_PATH=/usr/local/bin/chromedriver
