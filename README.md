@@ -41,6 +41,11 @@ java -jar {jar_name}.jar --spring.config.location=file:application.yml
 ```
 
 # API
+
+**Важно**: Все параметры в запросах передаются в виде параметров пути, например 
+`/some-path?parameter1=value1&parameter2=value2`.  
+Либо, если указано что параметер передается прямо в пути, например, `/some-path/{parameterValue}`, то передается прямо в пути.
+
 ## Создание первого администратора
 Создает первого админа. Доступно только если нет ни одного админа. Работает без авторизации.  
   
@@ -502,11 +507,13 @@ java -jar {jar_name}.jar --spring.config.location=file:application.yml
 Сохранение отзыва со стороны студента. Доступно только если включен таймер на паре  
 
 Запрос:  
-`POST /api/sessions/change-professor`
+`POST /api/reviews/save`
 
 Параметры:
 - `sessionId` - id пары
-- `newProfessor` - ФИО нового ведущего
+- `studentFullName` - ФИО студента
+- `reviewValue` - оценка пары, целое значение от 0 до 127
+- `comment` - комментарий
 
 Ответ:
 ```json
