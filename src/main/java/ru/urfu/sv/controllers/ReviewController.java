@@ -89,7 +89,7 @@ public class ReviewController {
 
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
-        headers.add(HttpHeaders.CONTENT_TYPE, MediaType.TEXT_PLAIN_VALUE);
+        headers.add(HttpHeaders.CONTENT_TYPE, "text/plain; charset=UTF-8");
 
         return new ResponseEntity<>(responseBody, headers, HttpStatus.OK);
     }

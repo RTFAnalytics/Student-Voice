@@ -21,7 +21,7 @@ public class SecurityConfig {
         http
                 .authorizeHttpRequests(requests -> requests
                         .requestMatchers("/", "/home", "/encode", "/admin/create-first", "/api/admin/create-first",
-                                "/login-page", "/static/bootstrap/**", "/bootstrap/**").permitAll()
+                                "/login-page", "/static/bootstrap/**", "/bootstrap/**", "/api/reviews/**", "/reviews/**").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(form -> form
                         .loginPage("/login-page")

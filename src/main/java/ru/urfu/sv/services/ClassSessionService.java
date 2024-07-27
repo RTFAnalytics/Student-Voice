@@ -70,7 +70,7 @@ public class ClassSessionService {
 
     @Transactional
     public ActionResult updateProfessorName(String professorName, String newProfessorName) {
-        List<ClassSession> sessions = findSavedClassSessionsByProfessorName(professorName, LocalDate.MIN, LocalDate.MAX);
+        List<ClassSession> sessions = findAllSavedClassSessionsByProfessorName(professorName);
         sessions.forEach(session -> {
             String names = session.getCourseDetails().getProfessorsNames();
             String name = session.getProfessorName();
@@ -123,6 +123,14 @@ public class ClassSessionService {
     public List<ClassSession> findSavedClassSessionsByProfessorName(String professorName, LocalDate dateFrom, LocalDate dateTo) {
         final List<ClassSession> savedClassSessions = repository
                 .findAllByProfessorNameIgnoreCaseAndStartDateTimeAfterAndEndDateTimeBefore(professorName, dateFrom.atStartOfDay(), dateTo.atStartOfDay());
+        String classSessionsStr = String.join("\n", savedClassSessions.stream().map(ClassSession::toString).toList());
+        log.info("Для преподавателя {} найдены следующие пары: {}", professorName, classSessionsStr);
+        return savedClassSessions;
+    }
+
+    public List<ClassSession> findAllSavedClassSessionsByProfessorName(String professorName) {
+        final List<ClassSession> savedClassSessions = repository
+                .findAllByProfessorNameIgnoreCase(professorName);
         String classSessionsStr = String.join("\n", savedClassSessions.stream().map(ClassSession::toString).toList());
         log.info("Для преподавателя {} найдены следующие пары: {}", professorName, classSessionsStr);
         return savedClassSessions;
