@@ -42,9 +42,12 @@ java -jar {jar_name}.jar --spring.config.location=file:application.yml
 
 # API
 
+### Swagger - `/swagger-ui/index.html`
+
 **Важно**: Все параметры в запросах передаются в виде параметров пути, например 
 `/some-path?parameter1=value1&parameter2=value2`.  
 Либо, если указано что параметер передается прямо в пути, например, `/some-path/{parameterValue}`, то передается прямо в пути.
+
 
 ## Создание первого администратора
 Создает первого админа. Доступно только если нет ни одного админа. Работает без авторизации.  
@@ -91,6 +94,22 @@ java -jar {jar_name}.jar --spring.config.location=file:application.yml
 - `instituteFullName` - полное название института
 - `instituteShortName` - аббревиатура института
 - `instituteAddress` - адрес института формата "улица, дом". Именно так, потому что так записано в модеусе
+
+Ответ:
+```json
+{
+  "result": {
+    "success": boolean,
+    "message": string
+  }
+}
+```
+
+### Список институтов
+Возвращает список существующих институтов.
+
+Запрос:  
+`GET /api/institutes/list`
 
 Ответ:
 ```json

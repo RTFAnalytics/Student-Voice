@@ -1,5 +1,8 @@
 package ru.urfu.sv.controllers.api;
 
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +40,14 @@ public class ClassSessionApiController {
     private final ClassSessionService sessionService;
 
     @PostMapping("create")
+    @Parameters(value = {
+            @Parameter(name = "courseId", in = ParameterIn.QUERY, required = true),
+            @Parameter(name = "professorName", in = ParameterIn.QUERY, required = true),
+            @Parameter(name = "startSession", in = ParameterIn.QUERY, required = true),
+            @Parameter(name = "endSession", in = ParameterIn.QUERY, required = true),
+            @Parameter(name = "roomName", in = ParameterIn.QUERY, required = true),
+            @Parameter(name = "sessionName", in = ParameterIn.QUERY, required = true)
+    })
     public ResponseEntity<Map<String, Object>> createSession(HttpServletRequest request) {
         ExtendedModelMap model = new ExtendedModelMap();
         sessionController.createSession(null, request, model);
@@ -46,6 +57,9 @@ public class ClassSessionApiController {
     }
 
     @GetMapping("find")
+    @Parameters(value = {
+            @Parameter(name = "sessionId", in = ParameterIn.QUERY, required = true)
+    })
     public ResponseEntity<Map<String, Object>> findSession(HttpServletRequest request) {
         ExtendedModelMap model = new ExtendedModelMap();
         sessionController.sessionPage(request.getParameter(CLASS_SESSION_ID), model);
@@ -77,6 +91,10 @@ public class ClassSessionApiController {
     }
 
     @PostMapping("start-timer")
+    @Parameters(value = {
+            @Parameter(name = "sessionId", in = ParameterIn.QUERY, required = true),
+            @Parameter(name = "time", in = ParameterIn.QUERY, required = true)
+    })
     public ResponseEntity<Map<String, Object>> startTimer(HttpServletRequest request) {
         UUID sessionId = UUID.fromString(request.getParameter(CLASS_SESSION_ID));
         Optional<ClassSession> sessionOpt = sessionService.findSessionById(sessionId);
@@ -96,6 +114,9 @@ public class ClassSessionApiController {
     }
 
     @GetMapping("reviews-list")
+    @Parameters(value = {
+            @Parameter(name = "sessionId", in = ParameterIn.QUERY, required = true)
+    })
     public ResponseEntity<Map<String, Object>> getSessionStudents(HttpServletRequest request) {
         ExtendedModelMap model = new ExtendedModelMap();
         sessionController.sessionStudentsPage(request.getParameter(CLASS_SESSION_ID), model);
@@ -109,6 +130,10 @@ public class ClassSessionApiController {
     }
 
     @PostMapping("change-professor")
+    @Parameters(value = {
+            @Parameter(name = "sessionId", in = ParameterIn.QUERY, required = true),
+            @Parameter(name = "newProfessor", in = ParameterIn.QUERY, required = true)
+    })
     public ResponseEntity<Map<String, Object>> changeProfessor(HttpServletRequest request) {
         ExtendedModelMap model = new ExtendedModelMap();
         sessionController.updateSession(request, model);
