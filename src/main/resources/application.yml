@@ -1,6 +1,8 @@
 application.host: 'http://localhost:8080'
 
-path.web.driver: ${web.driver.path}
+web.driver:
+  path: ${web.driver.path}
+  log: logs/webDriver.log
 
 server.servlet.session.timeout: 1h
 
@@ -22,7 +24,8 @@ urfu:
   user:
     username: ${urfu.username}
     password: ${urfu.password}
-  auth.url: 'https://sso.urfu.ru/adfs/OAuth2/authorize?resource=https://istudent.urfu.ru&type=web_server&client_id=https://istudent.urfu.ru&redirect_uri=https://istudent.urfu.ru/auth&response_type=code'
+  auth.url: 'https://sso.urfu.ru/adfs/OAuth2/authorize?resource=https://istudent.urfu.ru&type=web_server&client_id=https://istudent.urfu.ru&redirect_uri=https://istudent.urfu.ru/student/login/auth&response_type=code'
+  page.url: 'https://istudent.urfu.ru/'
 modeus:
   url: 'https://istudent.urfu.ru/s/modeus'
   persons.url: 'https://urfu.modeus.org/schedule-calendar-v2/api/people/persons/search'

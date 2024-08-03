@@ -20,10 +20,7 @@ import ru.urfu.sv.utils.result.ActionResultFactory;
 
 import java.io.IOException;
 import java.time.Instant;
-import java.util.Base64;
-import java.util.List;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
 
 import static ru.urfu.sv.utils.consts.Parameters.*;
 import static ru.urfu.sv.utils.consts.Roles.ADMIN;
@@ -114,8 +111,8 @@ public class UsersController {
         ActionResult result = userService.updateUser(username, UserInfo
                 .builder()
                 .username(username)
-                .password(password == null ? "" : password)
-                .additionalData(professorName == null ? null : Map.of(PROFESSOR_NAME, professorName))
+                .password(password)
+                .additionalData(professorName.isBlank() ? null : Map.of(PROFESSOR_NAME, professorName))
                 .build());
         model.addAttribute(RESULT, result);
         model.addAttribute("users", userService.findAllUsers());

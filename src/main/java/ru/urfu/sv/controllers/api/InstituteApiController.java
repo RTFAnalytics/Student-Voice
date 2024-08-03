@@ -1,5 +1,8 @@
 package ru.urfu.sv.controllers.api;
 
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +33,11 @@ public class InstituteApiController {
     private final InstituteService instituteService;
 
     @PostMapping("create")
+    @Parameters(value = {
+            @Parameter(name = "instituteFullName", in = ParameterIn.QUERY, required = true),
+            @Parameter(name = "instituteShortName", in = ParameterIn.QUERY, required = true),
+            @Parameter(name = "instituteAddress", in = ParameterIn.QUERY, required = true)
+    })
     public ResponseEntity<Map<String, Object>> create(HttpServletRequest request) {
         ExtendedModelMap model = new ExtendedModelMap();
         instituteController.createInstitute(request, model);

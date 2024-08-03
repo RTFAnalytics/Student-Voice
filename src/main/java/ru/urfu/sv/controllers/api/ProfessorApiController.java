@@ -1,5 +1,8 @@
 package ru.urfu.sv.controllers.api;
 
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +42,10 @@ public class ProfessorApiController {
     private final ClassSessionService sessionService;
 
     @GetMapping("current")
+    @Parameters(value = {
+            @Parameter(name = "from", in = ParameterIn.QUERY, required = true),
+            @Parameter(name = "to", in = ParameterIn.QUERY, required = true)
+    })
     public ResponseEntity<Map<String, Object>> getCurrent(@AuthenticationPrincipal UserDetails userDetails, HttpServletRequest request) {
         String username = userDetails.getUsername();
         Optional<Professor> professorOpt = professorService.findProfessorByUsername(username);
@@ -61,6 +68,10 @@ public class ProfessorApiController {
     }
 
     @PostMapping("update-sessions")
+    @Parameters(value = {
+            @Parameter(name = "from", in = ParameterIn.QUERY, required = true),
+            @Parameter(name = "to", in = ParameterIn.QUERY, required = true)
+    })
     public ResponseEntity<Map<String, Object>> update(@AuthenticationPrincipal UserDetails userDetails, HttpServletRequest request) {
         String username = userDetails.getUsername();
         Optional<Professor> professorOpt = professorService.findProfessorByUsername(username);

@@ -1,5 +1,8 @@
 package ru.urfu.sv.controllers.api;
 
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +25,12 @@ public class ReviewApiController {
     private final ReviewController reviewController;
 
     @PostMapping("save")
+    @Parameters(value = {
+            @Parameter(name = "sessionId", in = ParameterIn.QUERY, required = true),
+            @Parameter(name = "studentFullName", in = ParameterIn.QUERY, required = true),
+            @Parameter(name = "reviewValue", in = ParameterIn.QUERY, required = true),
+            @Parameter(name = "comment", in = ParameterIn.QUERY, required = true)
+    })
     public ResponseEntity<Map<String, Object>> createCourse(HttpServletRequest request) {
         ExtendedModelMap model = new ExtendedModelMap();
         reviewController.saveReview(request, model);
