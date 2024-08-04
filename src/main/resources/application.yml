@@ -3,6 +3,7 @@ application.host: 'http://localhost:8080'
 web.driver:
   path: ${web.driver.path}
   log: logs/webDriver.log
+  browser.binary: ${web.driver.browser.binary}
 
 server.servlet.session.timeout: 1h
 
