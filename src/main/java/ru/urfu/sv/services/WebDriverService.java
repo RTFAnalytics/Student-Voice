@@ -31,12 +31,15 @@ public class WebDriverService {
     private final FirefoxOptions firefoxOptions;
     private final FirefoxDriverService firefoxDriverService;
 
-    public WebDriverService(@Value("${web.driver.path}") String pathToDriver, @Value("${web.driver.log}") String pathToLog) {
+    public WebDriverService(@Value("${web.driver.path}") String pathToDriver,
+                            @Value("${web.driver.log}") String pathToLog,
+                            @Value("${web.driver.browser.binary}") String browserBinary) {
 //        chromeOptions = new ChromeOptions();
 //        chromeOptions.addArguments("--headless=new");
         System.setProperty("webdriver.chrome.driver", pathToDriver);
         System.setProperty("webdriver.gecko.driver", pathToDriver);
         firefoxOptions = new FirefoxOptions();
+        firefoxOptions.setBinary(browserBinary);
         firefoxOptions.addArguments("-headless");
         firefoxOptions.setLogLevel(FirefoxDriverLogLevel.INFO);
         firefoxDriverService = new GeckoDriverService.Builder().withLogFile(new File(pathToLog)).build();

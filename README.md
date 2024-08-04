@@ -712,7 +712,7 @@ java -jar {jar_name}.jar --spring.config.location=file:application.yml
   source ~/.bashrc
   ```
 
-3. Необходимо установить Chromedriver.
+~~3. Необходимо установить Chromedriver.~~
 
   ```bash
   wget https://storage.googleapis.com/chrome-for-testing-public/126.0.6478.126/linux64/chrome-headless-shell-linux64.zip
@@ -720,9 +720,29 @@ java -jar {jar_name}.jar --spring.config.location=file:application.yml
   sudo mv chrome-headless-shell-linux64 /usr/local/bin/chromedriver
   sudo chown root:root /usr/local/bin/chromedriver
   sudo chmod +x /usr/local/bin/chromedriver
-  export WEB_DRIVER_PATH=/usr/local/bin/chromedriver
+  export WEB_DRIVER_PATH=/usr/local/bin/chromedriver 
   ```
 
+3. Необходимо установить Firefox и Geckodriver.  
+Firefox:
+```bash
+  sudo install -d -m 0755 /etc/apt/keyrings
+  wget -q https://packages.mozilla.org/apt/repo-signing-key.gpg -O- | sudo tee /etc/apt/keyrings/packages.mozilla.org.asc > /dev/null
+  echo "deb [signed-by=/etc/apt/keyrings/packages.mozilla.org.asc] https://packages.mozilla.org/apt mozilla main" | sudo tee -a /etc/apt/sources.list.d/mozilla.list > /dev/null
+  echo '
+Package: *
+Pin: origin packages.mozilla.org
+Pin-Priority: 1000
+' | sudo tee /etc/apt/preferences.d/mozilla
+  sudo apt update && sudo apt install firefox
+  ```
+
+Geckodriver:
+```bash
+  wget https://github.com/mozilla/geckodriver/releases/download/v0.34.0/geckodriver-v0.34.0-linux64.tar.gz
+  tar -xvzf geckodriver-v0.34.0-linux64.tar.gz
+  chmod +x geckodriver
+  ```
 4. Установим PostgreSQL и создадим Базу данных, а также пользователя.
 
   ```bash
@@ -768,20 +788,17 @@ java -jar {jar_name}.jar --spring.config.location=file:application.yml
   sudo apt install maven
   mvn --version
   ```
+6. Изменяем `src/main/resources/application.yml` - ставим все нужные параметры, кроме urfu.username и urfu.password.
 
-6. Далее сформируем .jar файл. Для этого в директории проекта пропишите:
+7. Далее сформируем .jar файл. Для этого в директории проекта пропишите:
 
   ```bash
   mvn package spring-boot:repackage
   cd target
   ```
 
-7. Скопируем настройки проекта `application.yml` из `src/main/resources/application.yml` в текущую директорию.
-
-  При необходимости возможно изменение настроек в `application.yml` в зависимости от реквизитов БД.
-
 8. Запустим проект:
 
   ```bash
-  java -jar student-voice-0.2.jar --spring.config.location=file:application.yml --urfu.username=<пользователь> --urfu.password=<пароль>
+  java -jar student-voice-0.2.jar --urfu.username=<пользователь> --urfu.password=<пароль>
   ```
