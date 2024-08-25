@@ -27,26 +27,27 @@ public class WebDriverService {
     private String urfuPageUrl;
     @Value("${modeus.url}")
     private String modeusUrl;
+    @Value("${web.driver.log}")
+    String pathToLog;
+
     //private final ChromeOptions chromeOptions;
     private final FirefoxOptions firefoxOptions;
-    private final FirefoxDriverService firefoxDriverService;
 
     public WebDriverService(@Value("${web.driver.path}") String pathToDriver,
-                            @Value("${web.driver.log}") String pathToLog,
                             @Value("${web.driver.browser.binary}") String browserBinary) {
 //        chromeOptions = new ChromeOptions();
 //        chromeOptions.addArguments("--headless=new");
-        System.setProperty("webdriver.chrome.driver", pathToDriver);
+//        System.setProperty("webdriver.chrome.driver", pathToDriver);
         System.setProperty("webdriver.gecko.driver", pathToDriver);
         firefoxOptions = new FirefoxOptions();
         firefoxOptions.setBinary(browserBinary);
         firefoxOptions.addArguments("-headless");
         firefoxOptions.setLogLevel(FirefoxDriverLogLevel.INFO);
-        firefoxDriverService = new GeckoDriverService.Builder().withLogFile(new File(pathToLog)).build();
     }
 
     public Optional<String> getModeusAuthToken() {
         //ChromeDriver webDriver = new ChromeDriver(chromeOptions);
+        FirefoxDriverService firefoxDriverService = new GeckoDriverService.Builder().withLogFile(new File(pathToLog)).build();
         FirefoxDriver webDriver = new FirefoxDriver(firefoxDriverService, firefoxOptions);
         webDriver.manage().timeouts().pageLoadTimeout(Duration.ofSeconds(20)).implicitlyWait(Duration.ofSeconds(10));
 
