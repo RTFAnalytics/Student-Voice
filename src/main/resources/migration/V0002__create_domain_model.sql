@@ -5,8 +5,7 @@ create table if not exists institutes
     short_name VARCHAR(255)                             NOT NULL,
     address    VARCHAR(255)                             NOT NULL,
     PRIMARY KEY (id),
-    unique (id),
-    unique (short_name)
+    unique (id)
 );
 
 create table if not exists courses
