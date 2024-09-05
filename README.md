@@ -757,5 +757,5 @@ java -jar {jar_name}.jar --spring.config.location=file:application.yml
 8. Запустим проект:
 
   ```bash
-  java -jar student-voice-0.2.jar --spring.config.location=file:application.yml --urfu.username=<пользователь> --urfu.password=<пароль>
+  java -jar student-voice-0.2.jar --urfu.username=<пользователь> --urfu.password=<пароль>
   ```
