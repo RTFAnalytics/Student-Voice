@@ -9,9 +9,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import ru.urfu.sv.model.domain.ClassSession;
+import ru.urfu.sv.model.domain.entity.ClassSession;
 import ru.urfu.sv.utils.consts.Templates;
-import ru.urfu.sv.model.domain.Professor;
+import ru.urfu.sv.model.domain.entity.Professor;
 import ru.urfu.sv.services.ClassSessionService;
 import ru.urfu.sv.services.CourseService;
 import ru.urfu.sv.services.ProfessorService;
@@ -20,7 +20,6 @@ import ru.urfu.sv.utils.result.ActionResult;
 import ru.urfu.sv.utils.result.ActionResultFactory;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

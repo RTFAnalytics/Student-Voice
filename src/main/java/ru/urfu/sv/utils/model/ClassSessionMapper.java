@@ -5,8 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import ru.urfu.sv.model.domain.ClassSession;
-import ru.urfu.sv.model.domain.CourseDetails;
+import ru.urfu.sv.model.domain.entity.ClassSession;
+import ru.urfu.sv.model.domain.dto.CourseDetails;
 import ru.urfu.sv.utils.exceptions.ModeusException;
 import ru.urfu.sv.utils.formatters.TemporalFormatter;
 

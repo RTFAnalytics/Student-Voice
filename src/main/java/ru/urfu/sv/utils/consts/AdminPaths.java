@@ -14,7 +14,7 @@ public class AdminPaths {
             new Path("Создать пользователя", "/admin/users/create"),
             new Path("Создать пользователей из файла", "admin/users/create-from-file"),
             new Path("Создать институт", "/institutes/create"),
-            new Path("Скачать отчет", "/reviews/download-report")
+            new Path("Скачать отчет", "/reviews/download-report-xslx")
     );
 
     public static List<Path> getPaths(){

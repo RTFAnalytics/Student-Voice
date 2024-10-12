@@ -1,11 +1,11 @@
-package ru.urfu.sv.model.domain;
+package ru.urfu.sv.model.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import ru.urfu.sv.model.domain.dto.CourseDetails;
 
 import java.time.Instant;
 import java.time.LocalDateTime;
-import java.time.OffsetDateTime;
 import java.util.UUID;
 
 @Entity

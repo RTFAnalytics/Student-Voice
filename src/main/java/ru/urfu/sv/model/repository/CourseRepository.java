@@ -2,8 +2,8 @@ package ru.urfu.sv.model.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ru.urfu.sv.model.domain.Course;
-import ru.urfu.sv.model.domain.CourseDetails;
+import ru.urfu.sv.model.domain.entity.Course;
+import ru.urfu.sv.model.domain.dto.CourseDetails;
 
 import java.util.List;
 import java.util.Optional;

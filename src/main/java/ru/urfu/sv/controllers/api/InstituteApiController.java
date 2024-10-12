@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.urfu.sv.controllers.InstituteController;
-import ru.urfu.sv.model.domain.Institute;
+import ru.urfu.sv.model.domain.entity.Institute;
 import ru.urfu.sv.services.InstituteService;
 import ru.urfu.sv.utils.result.ActionResultResponse;
 

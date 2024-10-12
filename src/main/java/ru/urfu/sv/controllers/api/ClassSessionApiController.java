@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.urfu.sv.controllers.ClassSessionController;
-import ru.urfu.sv.model.domain.ClassSession;
+import ru.urfu.sv.model.domain.entity.ClassSession;
 import ru.urfu.sv.services.ClassSessionService;
 import ru.urfu.sv.utils.formatters.TemporalFormatter;
 import ru.urfu.sv.utils.result.ActionResultFactory;

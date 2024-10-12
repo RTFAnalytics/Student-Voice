@@ -1,10 +1,9 @@
-package ru.urfu.sv.model.domain;
+package ru.urfu.sv.model.domain.entity;
 
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.urfu.sv.utils.consts.Roles;
 

@@ -2,7 +2,6 @@ package ru.urfu.sv.services;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -10,27 +9,15 @@ import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
-import ru.homyakin.iuliia.Schemas;
-import ru.homyakin.iuliia.Translator;
-import ru.urfu.sv.model.domain.Authority;
 import ru.urfu.sv.model.repository.UserRepository;
-import ru.urfu.sv.utils.PasswordGenerator;
 import ru.urfu.sv.utils.consts.Parameters;
 import ru.urfu.sv.utils.consts.Roles;
-import ru.urfu.sv.model.domain.UserInfo;
+import ru.urfu.sv.model.domain.entity.UserInfo;
 import ru.urfu.sv.model.repository.AuthorityRepository;
-import ru.urfu.sv.utils.formatters.CsvFormatter;
-import ru.urfu.sv.utils.model.CreatedUser;
 import ru.urfu.sv.utils.result.ActionResult;
 import ru.urfu.sv.utils.result.ActionResultFactory;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @Service

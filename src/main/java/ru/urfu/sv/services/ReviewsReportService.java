@@ -23,4 +23,7 @@ public class ReviewsReportService {
                 "id;review_value;student_name;review_comment;session_name;course_name;professors;professor_name;institute_name;institute_address;room_name;create_timestamp\n");
     }
 
+    public List<ReviewInfo> getXlsxReport() {
+        return entityManager.createNamedQuery("findAllReviewInfo", ReviewInfo.class).getResultList();
+    }
 }

@@ -1,8 +1,10 @@
 package ru.urfu.sv.controllers;
 
 import jakarta.servlet.http.HttpServletRequest;
-import lombok.RequiredArgsConstructor;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -11,9 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
-import ru.urfu.sv.model.domain.ClassSession;
-import ru.urfu.sv.model.domain.Course;
-import ru.urfu.sv.model.domain.Review;
+import ru.urfu.sv.model.domain.entity.ClassSession;
+import ru.urfu.sv.model.domain.entity.Course;
+import ru.urfu.sv.model.domain.entity.Review;
 import ru.urfu.sv.services.ClassSessionService;
 import ru.urfu.sv.services.CourseService;
 import ru.urfu.sv.services.ReviewService;
@@ -34,14 +36,18 @@ import java.util.UUID;
 import static ru.urfu.sv.utils.consts.Parameters.*;
 
 @Controller
-@RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/reviews")
 public class ReviewController {
-    private final ReviewService reviewService;
-    private final ClassSessionService sessionService;
-    private final CourseService courseService;
-    private final ReviewsReportService reportService;
+
+    @Autowired
+    private ReviewService reviewService;
+    @Autowired
+    private ClassSessionService sessionService;
+    @Autowired
+    private CourseService courseService;
+    @Autowired
+    private ReviewsReportService reportService;
 
     @GetMapping("/create")
     public String createReviewPage(@RequestParam("sessionId") String sessionIdStr, Model model) {
@@ -92,6 +98,22 @@ public class ReviewController {
         headers.add(HttpHeaders.CONTENT_TYPE, "text/plain; charset=UTF-8");
 
         return new ResponseEntity<>(responseBody, headers, HttpStatus.OK);
+    }
+
+    @RequestMapping(path = "/download-report-xslx", method = RequestMethod.GET, produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    @ResponseBody
+    @SneakyThrows
+    public ResponseEntity<byte[]> downloadReportXSLX(HttpServletResponse response) {
+
+        final String fileName = "reviews_report".concat("_")
+                .concat(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy_HH-mm")))
+                .concat(".xlsx");
+
+        response.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName);
+        response.setContentType(HttpHeaders.CONTENT_TYPE);
+        final byte[] report = reviewService.getReport();
+
+        return new ResponseEntity<>(report, HttpStatus.OK);
     }
 
     @PostMapping("/save")

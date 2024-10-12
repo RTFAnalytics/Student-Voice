@@ -2,11 +2,9 @@ package ru.urfu.sv.services;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Transactional;
-import ru.urfu.sv.model.domain.Professor;
+import ru.urfu.sv.model.domain.entity.Professor;
 import ru.urfu.sv.model.repository.ProfessorRepository;
 import ru.urfu.sv.utils.result.ActionResult;
 import ru.urfu.sv.utils.result.ActionResultFactory;

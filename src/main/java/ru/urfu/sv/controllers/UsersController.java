@@ -8,7 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import ru.urfu.sv.model.domain.UserInfo;
+import ru.urfu.sv.model.domain.entity.UserInfo;
 import ru.urfu.sv.services.CreateUserFromFileService;
 import ru.urfu.sv.services.ProfessorService;
 import ru.urfu.sv.services.UserService;

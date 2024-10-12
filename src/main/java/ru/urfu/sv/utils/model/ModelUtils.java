@@ -4,7 +4,7 @@ import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.ui.Model;
-import ru.urfu.sv.model.domain.Professor;
+import ru.urfu.sv.model.domain.entity.Professor;
 import ru.urfu.sv.services.ProfessorService;
 
 import java.util.Optional;

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.homyakin.iuliia.Schemas;
 import ru.homyakin.iuliia.Translator;
-import ru.urfu.sv.model.domain.UserInfo;
+import ru.urfu.sv.model.domain.entity.UserInfo;
 import ru.urfu.sv.utils.PasswordGenerator;
 import ru.urfu.sv.utils.consts.Parameters;
 import ru.urfu.sv.utils.consts.Roles;

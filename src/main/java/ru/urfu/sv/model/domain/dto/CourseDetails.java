@@ -1,4 +1,4 @@
-package ru.urfu.sv.model.domain;
+package ru.urfu.sv.model.domain.dto;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Embeddable;

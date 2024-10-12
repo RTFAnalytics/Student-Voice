@@ -2,7 +2,6 @@ package ru.urfu.sv.utils.result;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
-import ru.urfu.sv.model.domain.Review;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ActionResultFactory {
