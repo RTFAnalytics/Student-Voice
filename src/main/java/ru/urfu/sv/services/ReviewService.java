@@ -1,24 +1,31 @@
 package ru.urfu.sv.services;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellStyle;
 import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.apache.poi.ss.util.CellRangeAddress;
+import org.apache.poi.xssf.streaming.SXSSFSheet;
+import org.apache.poi.xssf.streaming.SXSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.urfu.sv.model.domain.entity.ClassSession;
 import ru.urfu.sv.model.domain.entity.Review;
 import ru.urfu.sv.model.repository.ReviewRepository;
+import ru.urfu.sv.utils.excel.ExcelUtil;
 import ru.urfu.sv.utils.model.ReviewInfo;
 import ru.urfu.sv.utils.result.ActionResult;
 import ru.urfu.sv.utils.result.ActionResultFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+
+import static ru.urfu.sv.utils.formatters.DateFormatter.DATE_FORMATTER_WITH_HOURS_AND_MINUTES;
 
 @Service
 @Slf4j
@@ -72,41 +79,57 @@ public class ReviewService {
 
         final List<ReviewInfo> reviewInfoList = reportService.getXlsxReport();
 
-        try (final XSSFWorkbook workbook = new XSSFWorkbook()) {
-            final Sheet sheet = workbook.createSheet("Лист1");
+        try (final SXSSFWorkbook workbook = new SXSSFWorkbook()) {
+            final SXSSFSheet sheet = workbook.createSheet("Лист1");
 
-            final Row row = sheet.createRow(0);
-            int rowNumber = 0;
-            row.createCell(rowNumber++).setCellValue("id");
-            row.createCell(rowNumber++).setCellValue("review_value");
-            row.createCell(rowNumber++).setCellValue("student_name");
-            row.createCell(rowNumber++).setCellValue("review_comment");
-            row.createCell(rowNumber++).setCellValue("session_name");
-            row.createCell(rowNumber++).setCellValue("course_name");
-            row.createCell(rowNumber++).setCellValue("professors");
-            row.createCell(rowNumber++).setCellValue("professor_name");
-            row.createCell(rowNumber++).setCellValue("institute_name");
-            row.createCell(rowNumber++).setCellValue("institute_address");
-            row.createCell(rowNumber++).setCellValue("room_name");
-            row.createCell(rowNumber++).setCellValue("create_timestamp");
+            ExcelUtil.addTitleStyles(workbook);
+            final CellStyle titleStyle = workbook.getCellStyleAt(1);
 
+            final Row rowTitle = sheet.createRow(0);
+            int cell = 0;
+            rowTitle.createCell(cell++).setCellValue("id");
+            rowTitle.createCell(cell++).setCellValue("review_value");
+            rowTitle.createCell(cell++).setCellValue("student_name");
+            rowTitle.createCell(cell++).setCellValue("review_comment");
+            rowTitle.createCell(cell++).setCellValue("session_name");
+            rowTitle.createCell(cell++).setCellValue("course_name");
+            rowTitle.createCell(cell++).setCellValue("professors");
+            rowTitle.createCell(cell++).setCellValue("professor_name");
+            rowTitle.createCell(cell++).setCellValue("institute_name");
+            rowTitle.createCell(cell++).setCellValue("institute_address");
+            rowTitle.createCell(cell++).setCellValue("room_name");
+            rowTitle.createCell(cell).setCellValue("create_timestamp");
+
+            final int columnLastCellNum = rowTitle.getLastCellNum();
+
+            int rowNumber = 1;
             for (final ReviewInfo reviewInfo : reviewInfoList) {
 
                 final Row rowData = sheet.createRow(rowNumber++);
-                int cell = 0;
-                rowData.createCell(cell++).setCellValue(reviewInfo.getId().toString());
-                rowData.createCell(cell++).setCellValue(reviewInfo.getValue());
-                rowData.createCell(cell++).setCellValue(reviewInfo.getStudentName());
-                rowData.createCell(cell++).setCellValue(reviewInfo.getComment());
-                rowData.createCell(cell++).setCellValue(reviewInfo.getSessionName());
-                rowData.createCell(cell++).setCellValue(reviewInfo.getCourseName());
-                rowData.createCell(cell++).setCellValue(reviewInfo.getProfessors());
-                rowData.createCell(cell++).setCellValue(reviewInfo.getProfessorName());
-                rowData.createCell(cell++).setCellValue(reviewInfo.getInstituteName());
-                rowData.createCell(cell++).setCellValue(reviewInfo.getInstituteAddress());
-                rowData.createCell(cell++).setCellValue(reviewInfo.getRoomName());
-                rowData.createCell(cell).setCellValue(reviewInfo.getTimestamp().toString());
+                int cellData = 0;
+
+                rowData.createCell(cellData++).setCellValue(reviewInfo.getId().toString());
+                rowData.createCell(cellData++).setCellValue(reviewInfo.getValue());
+                rowData.createCell(cellData++).setCellValue(reviewInfo.getStudentName());
+                rowData.createCell(cellData++).setCellValue(reviewInfo.getComment());
+                rowData.createCell(cellData++).setCellValue(reviewInfo.getSessionName());
+                rowData.createCell(cellData++).setCellValue(reviewInfo.getCourseName());
+                rowData.createCell(cellData++).setCellValue(reviewInfo.getProfessors());
+                rowData.createCell(cellData++).setCellValue(reviewInfo.getProfessorName());
+                rowData.createCell(cellData++).setCellValue(reviewInfo.getInstituteName());
+                rowData.createCell(cellData++).setCellValue(reviewInfo.getInstituteAddress());
+                rowData.createCell(cellData++).setCellValue(reviewInfo.getRoomName());
+                rowData.createCell(cellData).setCellValue(reviewInfo.getTimestamp().atZone(ZoneId.systemDefault()).format(DATE_FORMATTER_WITH_HOURS_AND_MINUTES));
             }
+
+            sheet.trackAllColumnsForAutoSizing();
+            sheet.setAutoFilter(CellRangeAddress.valueOf("A" + ":" + "L"));
+            for (int i = 0; i < columnLastCellNum; i++) {
+                final Cell cellTitle = rowTitle.getCell(i);
+                cellTitle.setCellStyle(titleStyle);
+                sheet.autoSizeColumn(i);
+            }
+            sheet.untrackAllColumnsForAutoSizing();
 
             try (final ByteArrayOutputStream stream = new ByteArrayOutputStream()) {
                 workbook.write(stream);
