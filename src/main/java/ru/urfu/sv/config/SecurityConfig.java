@@ -14,6 +14,7 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
@@ -23,6 +24,7 @@ import ru.urfu.sv.config.filter.CustomAuthenticationEntryPoint;
 import ru.urfu.sv.config.filter.JwtAuthenticationFilter;
 import ru.urfu.sv.services.jwt.JwtUserDetailsService;
 
+import javax.sql.DataSource;
 import java.util.List;
 
 @Configuration
@@ -106,10 +108,10 @@ public class SecurityConfig {
         return new CorsFilter(source);
     }
 
-//    @Bean
-//    public JdbcUserDetailsManager jdbcUserDetailsManager(DataSource dataSource) {
-//        return new JdbcUserDetailsManager(dataSource);
-//    }
+    @Bean
+    public JdbcUserDetailsManager jdbcUserDetailsManager(DataSource dataSource) {
+        return new JdbcUserDetailsManager(dataSource);
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {

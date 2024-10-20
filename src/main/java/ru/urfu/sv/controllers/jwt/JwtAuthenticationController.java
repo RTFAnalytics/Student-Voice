@@ -1,4 +1,4 @@
-package ru.urfu.sv.controllers.rest;
+package ru.urfu.sv.controllers.jwt;
 
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Autowired;

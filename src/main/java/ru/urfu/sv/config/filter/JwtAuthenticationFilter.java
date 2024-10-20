@@ -1,9 +1,9 @@
 package ru.urfu.sv.config.filter;
 
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -14,8 +14,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 import ru.urfu.sv.services.jwt.JwtUserDetailsService;
 import ru.urfu.sv.utils.jwt.JwtUtil;
-
-import java.io.IOException;
 
 /**
  * Фильтр сделан для фильтрации запросов на наличие токенов и проверка их актуальности
@@ -33,7 +31,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     private JwtUtil jwtUtil;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+    @SneakyThrows
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) {
         final String authorizationHeader = request.getHeader("Authorization");
 
         String username = null;

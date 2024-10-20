@@ -24,8 +24,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 @Slf4j
 public class UserService {
-    /* Костыль, потом убрать данную логику */
-    private final JdbcUserDetailsManager userDetailsManager = new JdbcUserDetailsManager();
+    private final JdbcUserDetailsManager userDetailsManager;
     private final PasswordEncoder encoder;
     private final AuthorityRepository authorityRepository;
     private final UserRepository userRepository;
