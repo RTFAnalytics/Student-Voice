@@ -22,7 +22,7 @@ import static ru.urfu.sv.utils.model.ModelUtils.orNull;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/users")
-@PreAuthorize("hasRole('ADMIN')")
+@PreAuthorize("@AuthoritiesAC.isAdmin()")
 public class UsersApiController {
     private final UsersController usersController;
 

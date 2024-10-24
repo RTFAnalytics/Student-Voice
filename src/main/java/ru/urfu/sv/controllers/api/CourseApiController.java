@@ -25,7 +25,7 @@ import static ru.urfu.sv.utils.result.ActionResultResponse.fromActionResult;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/courses")
-@PreAuthorize("hasAnyRole('ADMIN', 'PROFESSOR')")
+@PreAuthorize("@AuthoritiesAC.isAdminOrProfessor()")
 public class CourseApiController {
     private final CourseController courseController;
 

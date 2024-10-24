@@ -28,7 +28,7 @@ import static ru.urfu.sv.utils.consts.Parameters.*;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-@PreAuthorize("hasRole('PROFESSOR')")
+@PreAuthorize("@AuthoritiesAC.isProfessor()")
 public class ProfessorController {
     private final ProfessorService professorService;
     private final CourseService courseService;

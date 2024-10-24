@@ -6,4 +6,6 @@ import ru.urfu.sv.model.domain.entity.Authority;
 
 @Repository
 public interface AuthorityRepository extends JpaRepository<Authority, String> {
+
+    Authority findAuthorityByUsername(String username);
 }

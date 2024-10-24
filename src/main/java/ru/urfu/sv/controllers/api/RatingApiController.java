@@ -22,7 +22,7 @@ import static ru.urfu.sv.utils.result.ActionResultResponse.fromActionResult;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/rating")
-@PreAuthorize("hasRole('ADMIN')")
+@PreAuthorize("@AuthoritiesAC.isAdmin()")
 public class RatingApiController {
     private final RatingController ratingController;
 

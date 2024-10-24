@@ -24,7 +24,7 @@ import static ru.urfu.sv.utils.consts.Templates.*;
 public class AdminController {
     private final UserService userService;
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("@AuthoritiesAC.isAdmin()")
     @GetMapping(value = {"/admin", "/admin-home"})
     public String adminHome(@AuthenticationPrincipal UserDetails userDetails, Model model) {
         model.addAttribute("adminPaths", AdminPaths.getPaths());

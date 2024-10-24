@@ -32,7 +32,7 @@ import static ru.urfu.sv.utils.model.ModelUtils.addProfessorName;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/sessions")
-@PreAuthorize("hasAnyRole('ADMIN', 'PROFESSOR')")
+@PreAuthorize("@AuthoritiesAC.isAdminOrProfessor()")
 public class ClassSessionController {
     private final ClassSessionService sessionService;
     private final ReviewService reviewService;

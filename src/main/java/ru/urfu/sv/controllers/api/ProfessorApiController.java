@@ -33,7 +33,7 @@ import static ru.urfu.sv.utils.consts.Parameters.CLASS_SESSIONS_LIST;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/professors")
-@PreAuthorize("hasRole('PROFESSOR')")
+@PreAuthorize("@AuthoritiesAC.isProfessor()")
 public class ProfessorApiController {
     private final ProfessorService professorService;
     private final CourseService courseService;

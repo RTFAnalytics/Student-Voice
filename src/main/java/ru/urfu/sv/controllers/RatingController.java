@@ -29,7 +29,7 @@ import static ru.urfu.sv.utils.consts.Parameters.*;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/rating")
-@PreAuthorize("hasRole('ADMIN')")
+@PreAuthorize("@AuthoritiesAC.isAdmin()")
 public class RatingController {
     private final InstituteService instituteService;
     private final CourseService courseService;

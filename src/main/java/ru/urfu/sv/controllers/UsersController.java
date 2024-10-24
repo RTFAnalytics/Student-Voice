@@ -30,7 +30,7 @@ import static ru.urfu.sv.utils.consts.Templates.*;
 @Controller
 @RequiredArgsConstructor
 @Slf4j
-@PreAuthorize("hasRole('ADMIN')")
+@PreAuthorize("@AuthoritiesAC.isAdmin()")
 @RequestMapping("/admin/users")
 public class UsersController {
     private final UserService userService;

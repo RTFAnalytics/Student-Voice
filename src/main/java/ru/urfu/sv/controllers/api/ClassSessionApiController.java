@@ -34,7 +34,7 @@ import static ru.urfu.sv.utils.result.ActionResultResponse.fromActionResult;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/sessions")
-@PreAuthorize("hasAnyRole('ADMIN', 'PROFESSOR')")
+@PreAuthorize("@AuthoritiesAC.isAdminOrProfessor()")
 public class ClassSessionApiController {
     private final ClassSessionController sessionController;
     private final ClassSessionService sessionService;

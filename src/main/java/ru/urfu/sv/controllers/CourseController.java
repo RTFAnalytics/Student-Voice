@@ -32,7 +32,7 @@ import static ru.urfu.sv.utils.model.ModelUtils.addProfessorName;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/courses")
-@PreAuthorize("hasAnyRole('PROFESSOR', 'ADMIN')")
+@PreAuthorize("@AuthoritiesAC.isAdminOrProfessor()")
 public class CourseController {
     private final CourseService courseService;
     private final ProfessorService professorService;

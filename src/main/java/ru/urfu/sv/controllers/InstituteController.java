@@ -19,7 +19,7 @@ import static ru.urfu.sv.utils.consts.Templates.*;
 @RequiredArgsConstructor
 @Slf4j
 @RequestMapping("/institutes")
-@PreAuthorize("hasRole('ADMIN')")
+@PreAuthorize("@AuthoritiesAC.isAdmin()")
 public class InstituteController {
     private final InstituteService instituteService;
 
