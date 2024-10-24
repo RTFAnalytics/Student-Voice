@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.urfu.sv.controllers.InstituteController;
-import ru.urfu.sv.controllers.links.checker.AuthoritiesAccessChecker;
 import ru.urfu.sv.model.domain.entity.Institute;
 import ru.urfu.sv.services.InstituteService;
 import ru.urfu.sv.utils.result.ActionResultResponse;
@@ -32,7 +31,6 @@ import static ru.urfu.sv.utils.result.ActionResultResponse.fromActionResult;
 public class InstituteApiController {
     private final InstituteController instituteController;
     private final InstituteService instituteService;
-    private final AuthoritiesAccessChecker authoritiesAccessChecker;
 
     @PostMapping("create")
     @Parameters(value = {
