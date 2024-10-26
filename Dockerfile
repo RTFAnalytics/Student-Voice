@@ -1,5 +1,4 @@
-FROM openjdk:17
-WORKDIR /app
-COPY ./target/student-voice-0.2.jar /app
-EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "student-voice-0.2.jar"]
+FROM openjdk:17-jdk-alpine
+ARG JAR_FILE=target/*.jar
+COPY ./target/student-voice-0.2.jar app.jar
+ENTRYPOINT ["java", "-jar", "/app.jar"]
