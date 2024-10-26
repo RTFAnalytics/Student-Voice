@@ -64,18 +64,15 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/", "/home", "/encode", "/admin/create-first", "/api/admin/create-first",
-                                "/login-page", "/static/bootstrap/**", "/bootstrap/**", "/api/reviews/**", "/reviews/**", "/api/login")
+                                "/login-page", "/static/bootstrap/**", "/bootstrap/**", "/api/reviews/**", "/reviews/**", "/api/login",
+                                "/swagger-ui/**", "/swagger-ui.html", "v3/api-docs/**"
+                        )
                         .permitAll()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
                 )
-                .formLogin(form -> form
-                        .loginPage("/login-page")
-                        .loginProcessingUrl("/login")
-                        .successForwardUrl("/user-home")
-                        .permitAll())
                 .sessionManagement(session -> session
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 )
