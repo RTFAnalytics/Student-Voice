@@ -9,9 +9,9 @@ services:
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://213.189.217.151:5432/student_voice
-      SPRING_DATASOURCE_USERNAME: urfuadmin
-      SPRING_DATASOURCE_PASSWORD: 1qaSW@3ed
+      SPRING_DATASOURCE_URL: jdbc:postgresql://localhost:5432/student_voice
+      SPRING_DATASOURCE_USERNAME: usre
+      SPRING_DATASOURCE_PASSWORD: passw
       SPRING_JPA_HIBERNATE_DDL_AUTO: none
       SPRING_JPA_DATABASE_PLATFORM: org.hibernate.dialect.PostgreSQLDialect
       SPRING_JPA_PROPERTIES_HIBERNATE_SHOW_SQL: false
