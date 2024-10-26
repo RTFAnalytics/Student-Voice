@@ -35,3 +35,8 @@ modeus:
 logging:
   level:
     org.hibernate.SQL: DEBUG
+
+springdoc:
+  swagger-ui:
+    path: /swagger-ui.html
+    operations-sorter: method
