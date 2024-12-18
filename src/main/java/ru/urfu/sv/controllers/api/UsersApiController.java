@@ -1,5 +1,8 @@
 package ru.urfu.sv.controllers.api;
 
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -24,6 +27,9 @@ public class UsersApiController {
     private final UsersController usersController;
 
     @PostMapping("create-from-file")
+    @Parameters(value = {
+            @Parameter(name = "file", required = true)
+    })
     public ResponseEntity<Map<String, Object>> uploadUsers(@RequestParam("file") MultipartFile file) throws IOException {
         ExtendedModelMap model = new ExtendedModelMap();
         usersController.uploadUsers(file, model);
@@ -38,6 +44,12 @@ public class UsersApiController {
     }
 
     @PostMapping("create")
+    @Parameters(value = {
+            @Parameter(name = "username", in = ParameterIn.QUERY, required = true),
+            @Parameter(name = "password", in = ParameterIn.QUERY, required = true),
+            @Parameter(name = "role", in = ParameterIn.QUERY, required = true),
+            @Parameter(name = "professorName", in = ParameterIn.QUERY)
+    })
     public ResponseEntity<Map<String, Object>> createUser(HttpServletRequest request) {
         ExtendedModelMap model = new ExtendedModelMap();
         usersController.createUser(request, model);
@@ -54,6 +66,11 @@ public class UsersApiController {
     }
 
     @PostMapping("update")
+    @Parameters(value = {
+            @Parameter(name = "username", in = ParameterIn.QUERY, required = true),
+            @Parameter(name = "password", in = ParameterIn.QUERY),
+            @Parameter(name = "professorName", in = ParameterIn.QUERY),
+    })
     public ResponseEntity<Map<String, Object>> updateUser(HttpServletRequest request) {
         ExtendedModelMap model = new ExtendedModelMap();
         usersController.updateUser(request, model);
@@ -63,6 +80,9 @@ public class UsersApiController {
     }
 
     @PostMapping("delete")
+    @Parameters(value = {
+            @Parameter(name = "username", in = ParameterIn.QUERY, required = true)
+    })
     public ResponseEntity<Map<String, Object>> deleteUser(HttpServletRequest request) {
         ExtendedModelMap model = new ExtendedModelMap();
         usersController.deleteUser(request.getParameter(USERNAME), model);

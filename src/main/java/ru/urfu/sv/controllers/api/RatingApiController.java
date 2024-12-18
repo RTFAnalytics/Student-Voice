@@ -1,5 +1,8 @@
 package ru.urfu.sv.controllers.api;
 
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -32,6 +35,9 @@ public class RatingApiController {
     }
 
     @GetMapping("/institute/{instituteId}")
+    @Parameters(value = {
+            @Parameter(name = "instituteId", in = ParameterIn.PATH, required = true)
+    })
     public ResponseEntity<Map<String, Object>> instituteRating(@PathVariable(INSTITUTE_ID) Integer instituteId) {
         ExtendedModelMap model = new ExtendedModelMap();
         ratingController.instituteRating(instituteId, model);
@@ -42,6 +48,9 @@ public class RatingApiController {
     }
 
     @GetMapping("/course/{courseId}")
+    @Parameters(value = {
+            @Parameter(name = "courseId", in = ParameterIn.PATH, required = true)
+    })
     public ResponseEntity<Map<String, Object>> instituteRating(@PathVariable(COURSE_ID) UUID courseId) {
         ExtendedModelMap model = new ExtendedModelMap();
         ratingController.courseRating(courseId, model);
@@ -52,6 +61,9 @@ public class RatingApiController {
     }
 
     @GetMapping("/session/{sessionId}")
+    @Parameters(value = {
+            @Parameter(name = "sessionId", in = ParameterIn.PATH, required = true)
+    })
     public ResponseEntity<Map<String, Object>> instituteRating(@PathVariable(CLASS_SESSION_ID) String sessionIdStr) {
         ExtendedModelMap model = new ExtendedModelMap();
         ratingController.sessionRating(sessionIdStr, model);
